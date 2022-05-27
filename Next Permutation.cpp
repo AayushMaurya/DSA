@@ -1,60 +1,64 @@
 // Next Permutation
+// built-in function next_permutation(arr.begin(), arr.end())
 
 #include<bits/stdc++.h>
 using namespace std;
 #define ll long long int
 #define pb push_back
-
-int binarySearch(int *arr, int start, int n, int num)
+ll max(ll x, ll y)
 {
-	for(int i=start ; i<n ; i++)
-	{
-		if(arr[i] > num)
-			return i;
-	}
-	return n-1;
+    return (x>y)?x:y;
+}
+ll min(ll x, ll y)
+{
+    return (x>y)?y:x;
+}
+void swap(ll *x, ll *y)
+{
+    ll temp = *x;
+    *x = *y;
+    *y = temp;
 }
 
-void solve()
-{
-	int n;
-	cin>>n;
-	int arr[n];
-	for(int i=0 ; i<n ; i++)
-		cin>>arr[i];
+ void nextPermutation(vector<int>& nums) {
+        set<int> st;
+        int n = nums.size();
+        int i, x;
+        for(i=n-1; i>=0; i--)
+        {
+            st.insert(nums[i]);
+            auto itr = st.find(nums[i]);
+            itr++;
+            if(itr!=st.end())
+            {
+                x=*itr;
+                break;
+            }
+        }
+        if(i==-1)
+        {
+            sort(nums.begin(), nums.end());
+            return;
+        }
+        for(int j=n-1; j>=0; j--)
+        {
+            if(nums[j] == x){
+                x=j;
+                break;
+            }
+        }
+        int temp=nums[x];
+        nums[x] = nums[i];
+        nums[i] = temp;
+        sort(nums.begin()+i+1, nums.end());
+    }
 
-	int max = arr[n-1];
-	if(n <= 1)
-		return;
-	int i;
-	for(i=n-2 ; i>=0 ; i--)
-	{
-		if(max > arr[i])
-		{
-			sort(arr+i+1, arr+n);
-			int j=i+1;
-			while(j<n && arr[j] <= arr[i])
-				j++;
-			int temp = arr[j];
-			arr[j] = arr[i];
-			arr[i] = temp;
-			break;
-		}
-		else	max = arr[i];
-	}
+int main() {
 
-	if(i < 0)
-		sort(arr, arr+n);
+int t;
+cin>>t;
+ for(int i=0; i<t; i++)
+    solve(i+1);
 
-	for(int k=0 ; k<n ; k++)
-		cout<<arr[k]<<" ";
-	cout<<endl;
-
-	return;
-}
-
-int main()
-{
-	solve();
-	return 0;
+return 0;
 }

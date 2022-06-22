@@ -1,4 +1,4 @@
-// Alternate positive and negative numbers
+// Alternate positive and negative number
 
 #include<bits/stdc++.h>
 using namespace std;

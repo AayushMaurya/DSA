@@ -19,39 +19,25 @@ void swap(ll *x, ll *y)
     *y = temp;
 }
 
-void solve()
-{
-    int n;
-    cin>>n;
-
-    int arr[n], dep[n];
-
-    for(int i=0 ; i<n ; i++)
-        cin>>arr[i];
-
-    for(int i=0 ; i<n ; i++)
-        cin>>dep[i];
-
-    sort(arr, arr+n);
-    sort(dep, dep+n);
-
-    int res=0, j=0, i=1;
-
-    while(i<n)
+int findPlatform(int arr[], int dep[], int n)
     {
-        if(arr[i]<=dep[j])
-            res++;
-        else
-            j++;
-        i++;
+        sort(arr, arr+n);
+        sort(dep, dep+n);
+        
+        int ans=0;
+        int ma=0;
+        int i=0, j=0;
+        while(i<n && j<n)
+        {
+            if(arr[i]<=dep[j]){
+                ma++;
+                i++;
+            }
+           else{
+               ma--;
+                j++;
+           }
+           ans = max(ma, ans);
+        }
+        return ans;
     }
-
-    cout<<res<<endl;
-
-    return;
-}
-
-int main(){
-    solve();
-    return 0;
-}

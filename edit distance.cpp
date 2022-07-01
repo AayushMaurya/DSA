@@ -1,9 +1,10 @@
-// Edit Distance
+// Edit distance
 
 #include<bits/stdc++.h>
 using namespace std;
 #define ll long long int
 #define pb push_back
+# define pii pair<int, int>
 ll max(ll x, ll y)
 {
     return (x>y)?x:y;
@@ -19,35 +20,30 @@ void swap(ll *x, ll *y)
     *y = temp;
 }
 
+int solve(int n, int m, string s, string t, vector<vector<int>>& dp)
+    {
+        if(n==0 || m==0)
+            return max(n, m);
+            
+        if(dp[n][m]!=-1)
+            return dp[n][m];
+            
+        if(s[n-1] == t[m-1])
+            return solve(n-1, m-1, s, t, dp);
 
-int minDistance(string word1, string word2) {
-        int m = word1.size(), n=word2.size();
-        int dp[m+1][n+1];
+        int replace = (dp[n-1][m-1]==-1) ? solve(n-1, m-1, s, t, dp) : dp[n-1][m-1];
+        int rem = (dp[n-1][m]==-1) ? solve(n-1, m, s, t, dp) : dp[n-1][m];
+        int add = (dp[n][m-1]==-1) ? solve(n, m-1, s, t, dp) : dp[n][m-1];
+            
+        dp[n][m] = 1+min(replace, min(rem, add));
         
-        for(int i=0; i<=m; i++)
-        {
-            for(int j=0; j<=n; j++)
-            {
-                if(i==0 || j==0)
-                    dp[i][j] = max(i, j);
-                else
-                {
-                    if(word1[i-1] == word2[j-1])
-                        dp[i][j] = dp[i-1][j-1];
-                    else
-                        dp[i][j] = min(dp[i-1][j-1], min(dp[i-1][j], dp[i][j-1])) + 1;
-                }
-            }
-        }
-        return dp[m][n];
+        return dp[n][m];
     }
-
-int main() {
-
-int t;
-cin>>t;
- for(int i=0; i<t; i++)
-    solve(i+1);
-
-return 0;
-}
+  
+    int editDistance(string s, string t) {
+        
+        int n = s.size(), m = t.size();
+        vector<vector<int>> dp(n+1, vector<int>(m+1, -1));
+        
+        return solve(n, m, s, t, dp);
+    }

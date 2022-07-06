@@ -1,9 +1,10 @@
-// Longest consecutive sequence
+// Longest Consecutive Sequence
 
 #include<bits/stdc++.h>
 using namespace std;
 #define ll long long int
 #define pb push_back
+# define pii pair<int, int>
 ll max(ll x, ll y)
 {
     return (x>y)?x:y;
@@ -20,34 +21,23 @@ void swap(ll *x, ll *y)
 }
 
 int longestConsecutive(vector<int>& nums) {
-        int n=nums.size();
-        if(n==0)
+        if(nums.size()==0)
             return 0;
-        unordered_map<int, int> mp;
-        int ans=1;
-        for(int i=0; i<n; i++)
+        unordered_set<int> record(nums.begin(), nums.end());
+        
+        int res=1;
+        for(int n: nums)
         {
-            mp[nums[i]]++;
+            if(record.find(n)==record.end())    continue;
+            record.erase(n);
+            
+            int prev=n-1, next = n+1;
+            
+            while(record.find(prev)!=record.end())  record.erase(prev--);
+            while(record.find(next)!=record.end())  record.erase(next++);
+            
+            res = max(res, next-prev-1);
         }
-        for(int i=0; i<n; i++)
-        {
-            if(!mp[nums[i]-1])
-            {
-                int j=nums[i];
-                while(mp[j+1])  j++;
-                
-                ans=max(ans, j-nums[i]+1);
-            }
-        }
-        return ans;
+        
+        return res;
     }
-
-int main() {
-
-int t;
-cin>>t;
- for(int i=0; i<t; i++)
-    solve(i+1);
-
-return 0;
-}

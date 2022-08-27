@@ -21,37 +21,29 @@ void swap(ll *x, ll *y)
 }
 
 vector<int> leftView(Node *root)
-{
-    vector<int> ans;
-    if(root==NULL)
-        return ans;
-        
-    map<int, int> mp;
-    queue<Node*> q;
-    int level = 0;
-    q.push(root);
-    
-    while(!q.empty())
     {
-        int n = q.size();
-        for(int i=0; i<n; i++)
-        {
-            Node* node = q.front();
-            q.pop();
-            
-            mp[level] = node->data;
-            
-            if(node->right)
-                q.push(node->right);
-                
-            if(node->left)
-                q.push(node->left);
-        }
-        level++;
-    }
-    
-    for(auto itr: mp)
-        ans.push_back(itr.second);
+        if(root==NULL)
+            return {};
+        vector<int> ans;
         
-    return ans;
-}
+        queue<Node*> q;
+        q.push(root);
+        
+        while(!q.empty())
+        {
+            int n = q.size();
+            for(int i=0; i<n; i++)
+            {
+                Node* node = q.front();
+                q.pop();
+                if(i==0)
+                    ans.push_back(node->data);
+                if(node->left)
+                    q.push(node->left);
+                if(node->right)
+                    q.push(node->right);
+            }
+        }
+        
+        return ans;
+    }

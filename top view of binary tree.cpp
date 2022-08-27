@@ -20,38 +20,34 @@ void swap(ll *x, ll *y)
     *y = temp;
 }
 
-void solve(Node* root, map<int, map<int, vector<int>>>& mp, int x, int y)
+vector<int> topView(Node *root)
     {
-        if(root==NULL)
-            return;
-            
-        mp[x][y].push_back(root->data);
-        solve(root->left, mp, x-1, y+1);
-        solve(root->right, mp, x+1, y+1);
-        
-        return;
-    }
-    
-    //Function to return a list of nodes visible from the top view 
-    //from left to right in Binary Tree.
-    vector<int> topView(Node *root)
-    {
-        map<int, map<int, vector<int>>> mp;
+        queue<pair<Node*, int>> q;
         vector<int> ans;
-        
-        if(root == NULL)
+        if(root==NULL)
             return ans;
-            
-        solve(root, mp, 0, 0);
         
-        for(auto itr: mp)
+        map<int, int> mp;
+        
+        q.push({root, 0});
+        
+        while(!q.empty())
         {
-            for(auto m: itr.second)
-            {
-                ans.push_back(m.second[0]);
-                break;
-            }
+            Node* node = q.front().first;
+            int line = q.front().second;
+            q.pop();
+            
+            if(mp.find(line)==mp.end())
+                mp[line] = node->data;
+            
+            if(node->left)
+                q.push({node->left, line-1});
+            if(node->right)
+                q.push({node->right, line+1});
         }
         
+        for(auto itr: mp)
+            ans.push_back(itr.second);
+            
         return ans;
     }

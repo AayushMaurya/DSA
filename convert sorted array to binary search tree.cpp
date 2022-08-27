@@ -1,4 +1,4 @@
-// Convert sorted array to binary search tree
+// Convert sorted arry to binary search tree
 
 #include<bits/stdc++.h>
 using namespace std;
@@ -20,23 +20,24 @@ void swap(ll *x, ll *y)
     *y = temp;
 }
 
-TreeNode* solve(int start, int end, vector<int>& nums)
+TreeNode* solve(vector<int>& nums, int left, int right)
     {
-        if(start>end)
+        if(left>right)
             return NULL;
         
-        int mid = (start+end)/2;
+        int mid = (left+right)/2;
+        
         TreeNode* root = new TreeNode(nums[mid]);
         
-        root->left = solve(start, mid-1, nums);
-        root->right = solve(mid+1, end, nums);
+        root->left = solve(nums, left, mid-1);
+        root->right = solve(nums, mid+1, right);
         
         return root;
     }
     
     TreeNode* sortedArrayToBST(vector<int>& nums) {
+        int left = 0;
+        int right = nums.size()-1;
         
-        TreeNode* root = new TreeNode();
-        root = solve(0, nums.size()-1, nums);
-        return root;
+        return solve(nums, left, right);
     }
